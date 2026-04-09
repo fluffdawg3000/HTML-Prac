@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fluffdawg Aim Routine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #ff4655;
+      --red-dark: #c0303c;
+      --bg: #0f1117;
+      --bg2: #171b24;
+      --bg3: #1e2330;
+      --text: #e8eaf0;
+      --muted: #8b90a0;
+      --border: rgba(255,70,85,0.25);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--red); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 5rem 2.5rem 4rem;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, #1a0d0f 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(255,70,85,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,70,85,0.12);
+      border: 1px solid var(--border);
+      color: var(--red);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+    .hero h1 span { color: var(--red); }
+    .hero-sub {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--red);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      padding: 0.75rem 1.75rem;
+      border-radius: 2px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .hero-cta:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .hero-cta svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item {
+      flex: 1;
+      min-width: 160px;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--red);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 0.35rem;
+    }
+
+    /* SECTIONS */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2.5rem;
+    }
+    .section-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .accent-bar {
+      width: 4px;
+      height: 1.5rem;
+      background: var(--red);
+      border-radius: 2px;
+    }
+
+    /* ABOUT + PHOTO */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .about-text p strong { color: var(--text); }
+    .photo-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--bg3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    .photo-placeholder svg { width: 48px; height: 48px; fill: rgba(255,70,85,0.4); }
+    .photo-placeholder p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    /* Once you add your photo, replace the placeholder div above with:
+       <img src="YOUR_PHOTO.jpg" alt="Your photo" style="width:100%;display:block;"> */
+    .photo-caption {
+      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.5px;
+    }
+
+    /* VIDEO */
+    .video-wrap {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .video-wrap iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: block;
+      border: none;
+    }
+    .video-caption {
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .video-caption svg { width: 20px; height: 20px; fill: var(--red); flex-shrink: 0; }
+    .video-caption p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .video-caption p strong { color: var(--text); }
+
+    /* ROUTINE CARDS */
+    .routine-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .routine-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .routine-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--red);
+    }
+    .card-step {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .card-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .card-badge {
+      display: inline-block;
+      margin-top: 0.85rem;
+      background: rgba(255,70,85,0.1);
+      border: 1px solid rgba(255,70,85,0.3);
+      color: var(--red);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    /* TIPS */
+    .tips-list { display: flex; flex-direction: column; gap: 1rem; }
+    .tip-item {
+      display: flex;
+      gap: 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      align-items: flex-start;
+    }
+    .tip-num {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: rgba(255,70,85,0.3);
+      line-height: 1;
+      min-width: 2rem;
+    }
+    .tip-text strong {
+      display: block;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .tip-text span {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+    footer span { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Fluffdawg</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#routine">Routine</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#tips">Tips</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Official Aim Routine</div>
+    <h1>Fluff<span>dawg</span></h1>
+    <p class="hero-sub">
+      2023 NECC Collegiate Valorant Champion &amp; multi-time Radiant. 
+      Train like a champion — follow the exact routine that built elite aim.
+    </p>
+    <a href="#video" class="hero-cta">
+      <svg viewBox="0 0 24 24" xmlns="https://youtu.be/kAy028vbKBg?si=57EQHVBgxq4rcEYZ">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      Watch the Routine
+    </a>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-number">1.67</div>
+      <div class="stat-label">K/D Ratio</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Radiant</div>
+      <div class="stat-label">Rank Achieved</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">2023</div>
+      <div class="stat-label">NECC Champion</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">Collegiate</div>
+      <div class="stat-label">Valorant Champion</div>
+    </div>
+  </div>
+
+  <!-- ABOUT + PHOTO -->
+  <section class="section" id="about">
+    <div class="section-title">
+      <div class="accent-bar"></div>
+      About Fluffdawg
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          <strong>Fluffdawg</strong> is a competitive Valorant player and 
+          <strong>2023 NECC Collegiate Valorant Champion</strong> who has reached 
+          <strong>Radiant</strong> (the highest rank in the game), on multiple occasions.
+        </p>
+        <p>
+          With a <strong>1.67 K/D ratio</strong>, Fluffdawg sits well above the average player, 
+          a testament to the consistency and discipline behind his training regimen. 
+          His aim routine has been refined through roughly 2,500 hours of deliberate 
+          practice and competitive play at the highest level.
+        </p>
+        <p>
+          This website breaks down the exact warm-up and aim training routine Fluffdawg 
+          uses to keep his mechanics sharp — from strafing drills to deathmatch exercises — 
+          so you can add the same structure to your own grind.
+        </p>
+      </div>
+      <div>
+        <div class="photo-card">
+          <!-- PHOTO SECTION: Replace the div below with <img src="your-photo.jpg" alt="Your photo" style="width:100%;display:block;"> -->
+          <img src="Images/ogfluffdawgpic.png" alt="Your photo" style="width:100%;display:block;">
+          <!-- END PHOTO SECTION -->
+          <div class="photo-caption">JR Simoneau / Fluffdawg</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- AIM ROUTINE -->
+  <section class="section" id="routine">
+    <div class="section-title">
+      <div class="accent-bar"></div>
+      The Aim Routine
+    </div>
+    <div class="routine-grid">
+
+      <div class="routine-card">
+        <div class="card-step">Step 01</div>
+        <div class="card-title">Strafing</div>
+        <div class="card-desc">
+          Begin by choosing a robot, and practice strafing left and right while keeping your crosshair at head level.
+          This builds the muscle memory for counter-strafing and maintaining accurate crosshair placement while moving. 
+          Start slow, then gradually increase your movement speed while keeping your aim steady.
+        </div>
+        <span class="card-badge">~1 min</span>
+      </div>
+
+      <div class="routine-card">
+        <div class="card-step">Step 02</div>
+        <div class="card-title">Strafing pt. 2</div>
+        <div class="card-desc">
+          Now start to shoot 2-3 bullet bursts while strafing. This adds the complexity of recoil control and timing your shots, 
+          which is crucial for landing headshots in real matches. Aim for the closest bot, but try to kill the one you're 
+          strafing around. 
+        </div>
+        <span class="card-badge">~2 min</span>
+      </div>
+
+      <div class="routine-card">
+        <div class="card-step">Step 03</div>
+        <div class="card-title">Hard difficulty bots</div>
+        <div class="card-desc">
+          Go onto the hardest difficulty and practice tracking the bots as they move unpredictably. This simulates real opponents 
+          who won't just stand still, and forces you to maintain smooth crosshair movement and adjust to erratic patterns. Focus 
+          on keeping your crosshair on the head as much as possible, even if you miss a few shots. The goal is to build the habit 
+          of tracking heads, not just spraying bullets. Aim for 20+ kills on hard bots before moving on.
+        </div>
+        <span class="card-badge">~5 min</span>
+      </div>
+
+      <div class="routine-card">
+        <div class="card-step">Step 04</div>
+        <div class="card-title">Team Deathmatch</div>
+        <div class="card-desc">
+          Go ahead and play 2-3 team deathmatches against real opponents. Don't worry about your K/D or trying to get kills — just 
+          focus on maintaining good crosshair placement, practicing your movement and strafing, and winning duels. This is the most 
+          important part of the routine, as it bridges the gap between controlled aim drills and the chaos of real matches.
+        </div>
+        <span class="card-badge">~25 min</span>
+      </div>
+
+      <div class="routine-card">
+        <div class="card-step">Step 05</div>
+        <div class="card-title">Ranked</div>
+        <div class="card-desc">
+          Now you're warmed up and ready to queue ranked. The goal here isn't to have a perfect K/D or carry the game — it's to stay 
+          mentally fresh, review your crosshair placement, and identify any bad habits in your aim or movement. Focus on playing your 
+          best, but don't get discouraged if you lose duels or have an off game. The real win is showing up consistently and putting in 
+          the work to improve over time. Play a max of 3 ranked games after your warm-up, then take a break and review your gameplay.
+        </div>
+        <span class="card-badge">~1-2 hrs</span>
+      </div>
+
+      <div class="routine-card">
+        <div class="card-step">Step 06</div>
+        <div class="card-title">Review</div>
+        <div class="card-desc">
+          After your session, take 10-15 minutes to review clips of your deaths and missed shots. This is where the real improvement 
+          happens, as you can identify patterns in your mistakes — whether it's poor crosshair placement, bad movement, or missed 
+          opportunities. Focus on learning from each death rather than getting frustrated. Over time, this will help you develop better 
+          habits and a deeper understanding of your own gameplay.
+        </div>
+        <span class="card-badge">15 mins</span>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- VIDEO -->
+  <section class="section" id="video">
+    <div class="section-title">
+      <div class="accent-bar"></div>
+      Routine Breakdown Video
+    </div>
+   <div class="video-wrap">
+  <a href="https://www.youtube.com/watch?v=kAy028vbKBg&t=10s" target="_blank" style="display:block; position:relative; text-decoration:none;">
+    <img src="https://img.youtube.com/vi/kAy028vbKBg/maxresdefault.jpg" alt="Fluffdawg Aim Routine" style="width:100%; display:block;"/>
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(255,70,85,0.9); border-radius:50%; width:72px; height:72px; display:flex; align-items:center; justify-content:center;">
+      <svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:white;margin-left:4px;"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+  </a>
+  <div class="video-caption">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/>
+    </svg>
+    <p><strong>Fluffdawg's Official Aim Routine</strong><br>
+    Click to watch on YouTube — full breakdown of every exercise, settings, and mindset.</p>
+  </div>
+</div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- TIPS -->
+  <section class="section" id="tips">
+    <div class="section-title">
+      <div class="accent-bar"></div>
+      Pro Tips From Fluffdawg
+    </div>
+    <div class="tips-list">
+      <div class="tip-item">
+        <div class="tip-num">01</div>
+        <div class="tip-text">
+          <strong>Consistency beats intensity</strong>
+          <span>A 45-minute focused routine every day will outperform a 3-hour session once a week. Build the habit before you build the volume.</span>
+        </div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-num">02</div>
+        <div class="tip-text">
+          <strong>Crosshair placement is everything</strong>
+          <span>Aim training only pays off if your default crosshair position is at head level. Do NOT sweep the floor with your crosshair.</span>
+        </div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-num">03</div>
+        <div class="tip-text">
+          <strong>Don't skip the 3 team deathmatches</strong>
+          <span>Aim trainers are awful, real opponents move unpredictably. These team deathmatches bridge the gap between controlled drills and live game scenarios.</span>
+        </div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-num">04</div>
+        <div class="tip-text">
+          <strong>Review your deaths</strong>
+          <span>After every session, watch back clips where you lost duels. 9 times out of 10 it's a crosshair placement or movement issue — not a reaction time issue.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Built for <span>Fluffdawg</span> — 2023 NECC Collegiate Valorant Champion &middot; Multi-time Radiant &middot; 1.67 K/D</p>
+    <p style="margin-top:0.5rem; font-size:0.75rem;"></p>
+  </footer>
+
+</body>
+</html>
